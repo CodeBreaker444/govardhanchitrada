@@ -1,0 +1,190 @@
+@import "_config.scss";
+@import url('https://fonts.googleapis.com/css?family=Archivo+Black');
+
+@font-face {
+  font-family: "hacked";
+  src: url(/HACKED.ttf);
+}
+
+@font-face{
+  font-family: "archivo";
+  src: url('https://fonts.googleapis.com/css?family=Archivo+Black') format('truetype');
+}
+header{
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.70);
+  color: $white;
+  height: 100%;
+  .name{
+    top: 44%;
+    justify-content: center;
+    font-family: 'hacked';
+    font-size: 6vw;
+    letter-spacing: 0.05em;
+    @include transition(.4s ease-in-out);
+    @include translateY(-50%);
+     position: absolute;
+    color: white;
+}
+@keyframes noise-anim{
+  $steps:20;
+  @for $i from 0 through $steps{
+    #{percentage($i*(1/$steps))}{
+      clip:rect(random(100)+px,9999px,random(100)+px,0);
+    }
+  }
+}
+
+.name:after{
+  content:attr(data-text);
+  position:absolute;
+  left:2px;
+  text-shadow:-1px 0 red;
+  top:0;
+  color:white;
+  background:black;
+  overflow:hidden;
+  clip:rect(0,900px,0,0);
+  animation:noise-anim 2s infinite linear alternate-reverse;
+}
+
+@keyframes noise-anim-2{
+  $steps:20;
+  @for $i from 0 through $steps{
+    #{percentage($i*(1/$steps))}{
+      clip:rect(random(100)+px,9999px,random(100)+px,0);
+    }
+  }
+}
+.name:before{
+  content:attr(data-text);
+  position:absolute;
+  left:-2px;
+  text-shadow:1px 0 blue;
+  top:0;
+  color: #FF0000;
+  background:black;
+  overflow:hidden;
+  clip:rect(0,900px,0,0);
+  animation:noise-anim-2 3s infinite linear alternate-reverse;
+}
+  .certification{
+    position: absolute;
+    top: 49.5%;
+    left: 71%;
+    font-size: 1.1vw;
+    transform: translate(-50%, -50%);
+  }
+  .nav-img{
+    width: 21px;
+    height: 21px;
+    margin-right: 3px;
+    margin-bottom: 4px;
+  }
+  nav,
+  nav ul,
+  nav ul li{
+    margin: 0;
+    padding: 0;
+  }
+  nav{
+    position: absolute;
+    top: 53%;
+    @include translateY(-50%);
+
+  ul li{
+    list-style-type: none;
+    display: inline-block;
+    margin-right: 30px;
+    &.last{
+      margin-right: 0;
+    }
+    a{
+      font-size: 1.1vw;
+      line-height: normal;
+      color: $white;
+    }
+  }
+  }
+
+}
+img.bg {
+width: 50%;
+height: 100%;
+position: absolute;
+display: inline-block;
+
+vertical-align: middle;
+top: 0%;
+}
+.but{
+  display: inline-block;
+  color: $red;
+  vertical-align: bottom;
+  font-family: 'archivo',sans-serif;
+  font-style: normal;
+  bottom: 0;
+  font-size: 1.2vw;
+  position: fixed;
+}
+@media screen and (max-width: 600px) {
+img.bg {
+    min-height: 10%;
+    min-width: 50%;
+    height: 50%;
+    width: auto;
+    position: absolute;
+    top: 25%;
+    margin-right: auto;
+    margin-left: auto;
+}
+header
+{
+  .name{
+    font-size: 10vw;
+  white-space: nowrap;
+}
+.certification{
+  font-size:4.2vw;
+  top: 47.5%;
+  left: 71%;
+  white-space: nowrap;
+
+}
+
+nav{
+  top: 53%;
+    list-style-type: none;
+  white-space: nowrap;
+  font-size: 70%;
+  @include translateY(-50%);
+
+
+ul li{
+  display: inline-block;
+  list-style-type: none;
+  margin-right: 5%;
+  &.last{
+    margin-right: 0;
+  }
+  a{
+    font-size: 4.1vw;
+    line-height: normal;
+    color: $white;
+  }
+}
+}
+}
+.but{
+  display: inline-block;
+  color: $red;
+  vertical-align: bottom;
+  font-family: 'archivo',sans-serif;
+  font-style: normal;
+  bottom: 0;
+  font-size: 4vw;
+  position: fixed;
+}
+}

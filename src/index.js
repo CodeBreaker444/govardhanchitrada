@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { Rainer } from 'redpill-rain'
+const rainer = new Rainer({
+  sourceType: 'github',
+  githubUsername: 'docker',
+  domElementId: 'root',
+})
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

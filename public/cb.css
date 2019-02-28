@@ -1,0 +1,12 @@
+#root {
+    /*height: 800px;*/
+    height: 97vh;
+
+}
+@media screen and (max-width: 600px) {
+  #root {
+      /*height: 800px;*/
+      height: 88vh;
+
+  }
+}
