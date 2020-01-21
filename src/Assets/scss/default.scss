@@ -88,10 +88,17 @@ header{
   nav ul li{
     margin: 0;
     padding: 0;
+    line-height: 0.9;
+    &.second{
+      display: flex;
+  justify-content: center;
+  padding: 0;
+    }
   }
   nav{
     position: absolute;
-    top: 53%;
+    top: 56.5%;
+    font-size: 40px;
     @include translateY(-50%);
 
   ul li{
@@ -101,8 +108,9 @@ header{
     &.last{
       margin-right: 0;
     }
+   
     a{
-      font-size: 1.1vw;
+      font-size: 1.4vw;
       line-height: normal;
       color: $white;
     }
@@ -166,9 +174,12 @@ ul li{
   display: inline-block;
   list-style-type: none;
   margin-right: 5%;
+  line-height: 60%;
+
   &.last{
     margin-right: 0;
   }
+ 
   a{
     font-size: 4.1vw;
     line-height: normal;

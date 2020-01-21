@@ -3,6 +3,8 @@ import Center from 'react-center'
 import github from '../../Assets/images/g.png'
 import facebook from '../../Assets/images/f.png'
 import google from '../../Assets/images/p.png'
+import blog from '../../Assets/images/b.png'
+import projects from '../../Assets/images/pro.png'
 
 class Header extends Component {
   render() {
@@ -28,6 +30,14 @@ class Header extends Component {
       </li>
       <li className="last">
       <a href="https://www.facebook.com/cod3br3ak3r" rel="noopener noreferrer" target="_blank"><img src={facebook} alt="govardhanchitrada govardhan" className="nav-img"/>Facebook</a>
+      </li>
+      </ul>
+      <ul className="second">
+      <li >
+      <a href="https://blog.govardhanchitrada.me" rel="noopener noreferrer" target="_blank"><img src={blog} alt="govardhanchitrada govardhan" className="nav-img"/>Blog</a>
+      </li>
+      <li >
+      <a href="https://projects.govardhanchitrada.me" rel="noopener noreferrer" target="_blank"><img src={projects} alt="govardhanchitrada govardhan" className="nav-img"/>Projects</a>
       </li>
       </ul>
       </nav>
