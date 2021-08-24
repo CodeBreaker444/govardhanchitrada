@@ -1,10 +1,10 @@
 self.__precacheManifest = [
   {
-    "revision": "f315db3c8de072341c6c",
-    "url": "/govardhanchitrada/static/css/main.90d718b0.chunk.css"
+    "revision": "c0788d3621748fa8a93c",
+    "url": "/govardhanchitrada/static/css/main.b6e9d908.chunk.css"
   },
   {
-    "revision": "f315db3c8de072341c6c",
+    "revision": "c0788d3621748fa8a93c",
     "url": "/govardhanchitrada/static/js/main.c98bc481.chunk.js"
   },
   {
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/govardhanchitrada/static/media/cb-cover.07d09dd6.png"
   },
   {
-    "revision": "559a2962f65122d4d6a21098e30e2eb6",
+    "revision": "62ed3304f621bd7dfba56b8459befc64",
     "url": "/govardhanchitrada/index.html"
   }
 ];
