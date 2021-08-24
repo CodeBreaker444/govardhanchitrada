@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/govardhanchitrada/static/media/cb-cover.07d09dd6.png"
   },
   {
-    "revision": "6b9bac3106abf0cc30374f9c0a717206",
+    "revision": "559a2962f65122d4d6a21098e30e2eb6",
     "url": "/govardhanchitrada/index.html"
   }
 ];

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/govardhanchitrada/precache-manifest.a80bbf34b28731854522b01c0a3ff75b.js"
+  "/govardhanchitrada/precache-manifest.2eebf397051ce44368de4a22453d2485.js"
 );
 
 workbox.clientsClaim();
