@@ -1,10 +1,12 @@
 {
   "name": "govardhanchitrada",
+  "homepage": "https://codebreaker444.github.io/govardhanchitrada/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "base-64": "^0.1.0",
     "bootstrap": "^4.4.1",
+    "cross-spawn": "^6.0.5",
     "gulp": "^4.0.2",
     "gulp-changed": "^3.2.0",
     "gulp-clean-css": "^4.2.0",
@@ -26,7 +28,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -36,5 +40,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
+  }
 }

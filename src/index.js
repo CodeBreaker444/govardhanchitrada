@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Rainer } from 'redpill-rain'
+import { hydrate, render } from 'react-dom';
+
 const rainer = new Rainer({
   sourceType: 'github',
   githubUsername: 'docker',

@@ -34,10 +34,10 @@ class Header extends Component {
       </ul>
       <ul className="second">
       <li >
-      <a href="https://blog.govardhanchitrada.me" rel="noopener noreferrer" target="_blank"><img src={blog} alt="govardhanchitrada govardhan" className="nav-img"/>Blog</a>
+      <a href="https://blog.govardhanchitrada.com" rel="noopener noreferrer" target="_blank"><img src={blog} alt="govardhanchitrada govardhan" className="nav-img"/>Blog</a>
       </li>
       <li >
-      <a href="https://projects.govardhanchitrada.me" rel="noopener noreferrer" target="_blank"><img src={projects} alt="govardhanchitrada govardhan" className="nav-img"/>Projects</a>
+      <a href="https://projects.govardhanchitrada.com" rel="noopener noreferrer" target="_blank"><img src={projects} alt="govardhanchitrada govardhan" className="nav-img"/>Projects</a>
       </li>
       </ul>
       </nav>
