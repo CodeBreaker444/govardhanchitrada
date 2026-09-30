@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>CabinetPass — Encrypted Passwords & Files</title>
+  <meta name="description" content="CabinetPass keeps your passwords, 2FA codes and private documents in one encrypted vault that only you can open. Argon2id + AES-256. Optional sync through your own Google Drive." />
+  <meta name="theme-color" content="#0B5CF0" />
+  <meta property="og:title" content="CabinetPass — Encrypted Passwords & Files" />
+  <meta property="og:description" content="Passwords, 2FA codes and private documents in one encrypted vault. Your master password never leaves your iPhone." />
+  <meta property="og:image" content="apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <!-- Replace YOUR_APP_ID once the app is live to show the Smart App Banner in Safari. -->
+  <!-- <meta name="apple-itunes-app" content="app-id=YOUR_APP_ID" /> -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'media',
+      theme: {
+        extend: {
+          colors: {
+            brand: { sky: '#0492FA', DEFAULT: '#0B5CF0', deep: '#0948E6', light: '#5CB8FB', night: '#3F8CFF' },
+            ios: { bg: '#F2F2F7', card: '#FFFFFF', dbg: '#000000', dcard: '#1C1C1E', label2: '#8E8E93' },
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', 'Inter', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+            mono: ['ui-monospace', '"SF Mono"', 'Menlo', 'Consolas', 'monospace'],
+          },
+          boxShadow: {
+            glass: '0 10px 30px rgba(11, 42, 107, 0.14)',
+            phone: '0 40px 80px -20px rgba(9, 72, 230, 0.35), 0 20px 40px -20px rgba(0,0,0,.25)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :root { color-scheme: light dark; }
+    body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    .brand-gradient { background-image: linear-gradient(135deg, #1E8BFF 0%, #0B56F1 55%, #0948E6 100%); }
+    .brand-text { background-image: linear-gradient(135deg, #0492FA 0%, #0B56F1 60%, #0948E6 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.6) 45%, rgba(255,255,255,.6) 100%);
+      backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: .8px solid rgba(255,255,255,.85);
+    }
+    .nav-glass { background: rgba(242,242,247,.72); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); }
+    @media (prefers-color-scheme: dark) {
+      .glass { background: linear-gradient(180deg, rgba(255,255,255,.10) 0%, rgba(28,28,30,.55) 45%, rgba(28,28,30,.55) 100%); border-color: rgba(255,255,255,.14); }
+      .nav-glass { background: rgba(0,0,0,.6); }
+    }
+    .hero-glow { background: radial-gradient(60% 50% at 50% 30%, rgba(4,146,250,.22) 0%, rgba(11,92,240,.10) 45%, transparent 75%); }
+    details > summary { list-style: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .chev { transform: rotate(90deg); }
+    @media (prefers-reduced-motion: no-preference) {
+      .float { animation: float 6s ease-in-out infinite; }
+      @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-10px) } }
+      .ring-anim { animation: ring 30s linear infinite; }
+      @keyframes ring { from { stroke-dashoffset: 0 } to { stroke-dashoffset: 88 } }
+    }
+  </style>
+</head>
+<body class="bg-ios-bg text-black dark:bg-black dark:text-white font-sans">
+
+  <!-- Nav -->
+  <header class="sticky top-0 z-50 nav-glass border-b border-black/5 dark:border-white/10">
+    <nav class="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <a href="#" class="flex items-center gap-2 font-semibold tracking-tight">
+        <img src="logo.png" alt="" class="h-8 w-8" />
+        <span class="hidden text-[17px] min-[360px]:inline">CabinetPass</span>
+      </a>
+      <div class="hidden items-center gap-7 text-sm text-black/70 dark:text-white/70 md:flex">
+        <a href="#features" class="hover:text-black dark:hover:text-white">Features</a>
+        <a href="#security" class="hover:text-black dark:hover:text-white">Security</a>
+        <a href="#sync" class="hover:text-black dark:hover:text-white">Sync</a>
+        <a href="privacy.html" class="inline-flex items-center gap-1.5 hover:text-black dark:hover:text-white"><i data-lucide="shield-check" class="h-4 w-4"></i>Privacy Policy</a>
+        <a href="terms.html" class="inline-flex items-center gap-1.5 hover:text-black dark:hover:text-white"><i data-lucide="file-text" class="h-4 w-4"></i>Terms</a>
+        <a href="#faq" class="hover:text-black dark:hover:text-white">FAQ</a>
+      </div>
+      <a href="#download" class="rounded-full brand-gradient px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:opacity-90">Get the App</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="hero-glow pointer-events-none absolute inset-0"></div>
+      <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-14 sm:px-6 md:grid-cols-2 md:pt-24">
+        <div class="min-w-0 text-center md:text-left">
+          <div class="mb-5 inline-flex max-w-full items-center gap-2 rounded-full text-left bg-white/80 px-3 py-1 text-xs font-semibold text-brand shadow-sm ring-1 ring-black/5 dark:bg-white/10 dark:text-brand-night dark:ring-white/10">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand dark:bg-brand-night"></span>
+            Zero-knowledge · No account needed
+          </div>
+          <h1 class="text-[38px] min-[380px]:text-[44px] font-bold leading-[1.05] tracking-tight sm:text-6xl">
+            Your passwords.<br />Your files.<br /><span class="brand-text">Your key.</span>
+          </h1>
+          <p class="mx-auto mt-6 max-w-md text-lg leading-relaxed text-black/60 dark:text-white/60 md:mx-0">
+            CabinetPass keeps passwords, two-factor codes, cards and private documents in one encrypted vault that only you can open.
+          </p>
+          <div id="download" class="mt-8 flex flex-wrap items-center justify-center gap-3 md:justify-start">
+            <!-- Replace href with your App Store URL once published. -->
+            <a href="#" aria-label="Download on the App Store"
+               class="inline-flex h-14 shrink-0 items-center gap-3 whitespace-nowrap rounded-2xl bg-black px-6 text-white shadow-lg transition hover:scale-[1.02] dark:bg-white dark:text-black">
+              <svg viewBox="0 0 24 24" class="h-7 w-7" fill="currentColor" aria-hidden="true"><path d="M16.37 12.64c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.76.73 1.06 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.41 1.2-2.47-.03-.01-2.3-.88-2.32-3.52zM14.2 6.17c.6-.73 1.01-1.75.9-2.77-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.68-.92 2.67.97.08 1.96-.49 2.56-1.21z"/></svg>
+              <span class="text-left leading-tight"><span class="block text-[11px] opacity-80">Download on the</span><span class="block text-xl font-semibold -mt-0.5">App Store</span></span>
+            </a>
+            <a href="#security" class="inline-flex h-14 shrink-0 items-center whitespace-nowrap rounded-2xl px-5 font-semibold text-brand hover:bg-brand/5 dark:text-brand-night dark:hover:bg-white/5">
+              How it’s encrypted <i data-lucide="arrow-right" class="ml-1.5 h-4 w-4"></i>
+            </a>
+          </div>
+          <p class="mt-4 text-xs text-black/40 dark:text-white/40">For iPhone. Free to use.</p>
+        </div>
+
+        <!-- Phone mockup (pure HTML/CSS recreation of the Vaults screen) -->
+        <div class="flex min-w-0 justify-center md:justify-end">
+          <div class="float relative w-full max-w-[300px] sm:max-w-[320px]">
+            <div class="rounded-[52px] bg-[#1d1d1f] p-[10px] shadow-phone dark:bg-[#2c2c2e]">
+              <div class="relative h-[620px] overflow-hidden rounded-[44px] bg-ios-bg dark:bg-black sm:h-[660px]">
+                <!-- status bar -->
+                <div class="flex items-center justify-between px-7 pt-3 text-[13px] font-semibold">
+                  <span>9:41</span>
+                  <span class="absolute left-1/2 top-2.5 h-[26px] w-[92px] -translate-x-1/2 rounded-full bg-black"></span>
+                  <span class="flex items-center gap-1">
+                    <svg class="h-3 w-4" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                    <svg class="h-3 w-6" viewBox="0 0 26 12" fill="none" stroke="currentColor"><rect x=".5" y=".5" width="22" height="11" rx="3"/><rect x="2" y="2" width="19" height="8" rx="2" fill="currentColor"/></svg>
+                  </span>
+                </div>
+                <div class="px-4">
+                  <div class="flex justify-end pt-3 text-brand dark:text-brand-night"><i data-lucide="plus" class="h-6 w-6"></i></div>
+                  <h2 class="mt-1 text-[32px] font-bold tracking-tight">Vaults</h2>
+                  <div class="mt-2 flex h-9 items-center gap-2 rounded-[10px] bg-black/[.06] px-2.5 text-[15px] text-ios-label2 dark:bg-white/[.1]">
+                    <i data-lucide="search" class="h-4 w-4"></i>Search
+                  </div>
+                  <!-- sync card -->
+                  <div class="mt-3 flex items-center gap-3 rounded-xl bg-white p-2.5 dark:bg-ios-dcard">
+                    <span class="grid h-7 w-7 place-items-center rounded-full bg-[#34C759] text-white"><i data-lucide="check" class="h-4 w-4"></i></span>
+                    <div class="flex-1 leading-tight"><div class="text-[13px] font-semibold">Synced just now</div><div class="text-[11px] text-ios-label2">Google Drive</div></div>
+                    <i data-lucide="refresh-cw" class="h-4 w-4 text-brand dark:text-brand-night"></i>
+                  </div>
+                  <!-- tiles -->
+                  <div class="mt-3 grid grid-cols-2 gap-2.5">
+                    <div class="rounded-xl bg-white p-2.5 dark:bg-ios-dcard"><div class="flex items-center justify-between"><span class="grid h-7 w-7 place-items-center rounded-full bg-brand text-white"><i data-lucide="lock" class="h-3.5 w-3.5"></i></span><span class="text-xl font-bold">42</span></div><div class="mt-2 text-[12px] font-semibold text-ios-label2">All Items</div></div>
+                    <div class="rounded-xl bg-white p-2.5 dark:bg-ios-dcard"><div class="flex items-center justify-between"><span class="grid h-7 w-7 place-items-center rounded-full bg-[#FFCC00] text-white"><i data-lucide="star" class="h-3.5 w-3.5"></i></span><span class="text-xl font-bold">8</span></div><div class="mt-2 text-[12px] font-semibold text-ios-label2">Favorites</div></div>
+                    <div class="rounded-xl bg-white p-2.5 dark:bg-ios-dcard"><div class="flex items-center justify-between"><span class="grid h-7 w-7 place-items-center rounded-full bg-[#FF9500] text-white"><i data-lucide="paperclip" class="h-3.5 w-3.5"></i></span><span class="text-xl font-bold">6</span></div><div class="mt-2 text-[12px] font-semibold text-ios-label2">Files</div></div>
+                    <div class="rounded-xl bg-white p-2.5 dark:bg-ios-dcard"><div class="flex items-center justify-between"><span class="grid h-7 w-7 place-items-center rounded-full bg-[#34C759] text-white"><i data-lucide="shield-check" class="h-3.5 w-3.5"></i></span><span class="text-xl font-bold">0</span></div><div class="mt-2 text-[12px] font-semibold text-ios-label2">Security</div></div>
+                  </div>
+                  <!-- groups -->
+                  <div class="mt-4 px-1 text-[11px] uppercase tracking-wide text-ios-label2">Groups</div>
+                  <div class="mt-1 divide-y divide-black/5 overflow-hidden rounded-xl bg-white dark:divide-white/10 dark:bg-ios-dcard">
+                    <div class="flex items-center gap-3 px-3 py-2"><span class="grid h-6 w-6 place-items-center rounded-md bg-[#007AFF] text-white"><i data-lucide="globe" class="h-3.5 w-3.5"></i></span><span class="flex-1 text-[14px]">Web Logins</span><span class="flex items-center gap-0.5 text-[13px] text-ios-label2">18<i data-lucide="chevron-right" class="h-3.5 w-3.5 opacity-60"></i></span></div>
+                    <div class="flex items-center gap-3 px-3 py-2"><span class="grid h-6 w-6 place-items-center rounded-md bg-[#FF2D55] text-white"><i data-lucide="message-circle" class="h-3.5 w-3.5"></i></span><span class="flex-1 text-[14px]">Social Media</span><span class="flex items-center gap-0.5 text-[13px] text-ios-label2">7<i data-lucide="chevron-right" class="h-3.5 w-3.5 opacity-60"></i></span></div>
+                    <div class="flex items-center gap-3 px-3 py-2"><span class="grid h-6 w-6 place-items-center rounded-md bg-[#34C759] text-white"><i data-lucide="landmark" class="h-3.5 w-3.5"></i></span><span class="flex-1 text-[14px]">Banking &amp; Finance</span><span class="flex items-center gap-0.5 text-[13px] text-ios-label2">5<i data-lucide="chevron-right" class="h-3.5 w-3.5 opacity-60"></i></span></div>
+                    <div class="flex items-center gap-3 px-3 py-2"><span class="grid h-6 w-6 place-items-center rounded-md bg-[#5856D6] text-white"><i data-lucide="mail" class="h-3.5 w-3.5"></i></span><span class="flex-1 text-[14px]">Email</span><span class="flex items-center gap-0.5 text-[13px] text-ios-label2">4<i data-lucide="chevron-right" class="h-3.5 w-3.5 opacity-60"></i></span></div>
+                    <div class="flex items-center gap-3 px-3 py-2"><span class="grid h-6 w-6 place-items-center rounded-md bg-[#8E8E93] text-white"><i data-lucide="file-text" class="h-3.5 w-3.5"></i></span><span class="flex-1 text-[14px]">Documents</span><span class="flex items-center gap-0.5 text-[13px] text-ios-label2">6<i data-lucide="chevron-right" class="h-3.5 w-3.5 opacity-60"></i></span></div>
+                  </div>
+                </div>
+                <!-- glass tab bar -->
+                <div class="glass shadow-glass absolute bottom-4 left-3 right-3 flex h-[58px] items-center rounded-full p-1">
+                  <div class="flex h-full flex-1 flex-col items-center justify-center rounded-full bg-brand/10 text-brand ring-1 ring-white/70 dark:bg-white/10 dark:text-brand-night dark:ring-white/10">
+                    <i data-lucide="layers" class="h-5 w-5"></i>
+                    <span class="text-[9px] font-semibold">Vaults</span>
+                  </div>
+                  <div class="flex flex-1 flex-col items-center justify-center"><i data-lucide="wand-sparkles" class="h-5 w-5"></i><span class="text-[9px] font-medium">Generator</span></div>
+                  <div class="flex flex-1 flex-col items-center justify-center"><i data-lucide="timer" class="h-5 w-5"></i><span class="text-[9px] font-medium">2FA</span></div>
+                  <div class="flex flex-1 flex-col items-center justify-center"><i data-lucide="settings" class="h-5 w-5"></i><span class="text-[9px] font-medium">Settings</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust strip -->
+    <section class="border-y border-black/5 bg-white dark:border-white/10 dark:bg-ios-dcard">
+      <div class="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 text-center sm:px-6 md:grid-cols-4">
+        <div><div class="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-xl bg-brand/10 text-brand dark:bg-white/10 dark:text-brand-night"><i data-lucide="lock-keyhole" class="h-5 w-5"></i></div><div class="text-2xl font-bold brand-text">AES-256</div><div class="mt-1 text-sm text-black/50 dark:text-white/50">GCM authenticated encryption</div></div>
+        <div><div class="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-xl bg-brand/10 text-brand dark:bg-white/10 dark:text-brand-night"><i data-lucide="cpu" class="h-5 w-5"></i></div><div class="text-2xl font-bold brand-text">Argon2id</div><div class="mt-1 text-sm text-black/50 dark:text-white/50">Memory-hard key derivation</div></div>
+        <div><div class="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-xl bg-brand/10 text-brand dark:bg-white/10 dark:text-brand-night"><i data-lucide="database" class="h-5 w-5"></i></div><div class="text-2xl font-bold brand-text">0 bytes</div><div class="mt-1 text-sm text-black/50 dark:text-white/50">Of your data on our servers</div></div>
+        <div><div class="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-xl bg-brand/10 text-brand dark:bg-white/10 dark:text-brand-night"><i data-lucide="user-x" class="h-5 w-5"></i></div><div class="text-2xl font-bold brand-text">No account</div><div class="mt-1 text-sm text-black/50 dark:text-white/50">Just a master password</div></div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="text-sm font-semibold uppercase tracking-wider text-brand dark:text-brand-night">Everything in one vault</p>
+        <h2 class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">Built for the things you can’t afford to lose.</h2>
+      </div>
+      <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- card -->
+        <div class="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+          <div class="grid h-12 w-12 place-items-center rounded-[14px] bg-[#007AFF] text-white shadow-sm"><i data-lucide="folder-lock" class="h-6 w-6"></i></div>
+          <h3 class="mt-5 text-xl font-semibold">Groups that make sense</h3>
+          <p class="mt-2 leading-relaxed text-black/60 dark:text-white/60">Web Logins, Social Media, Banking &amp; Finance, Email, Wi-Fi, Identity, Documents and more — or create your own with custom icons and colours.</p>
+        </div>
+        <div class="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+          <div class="grid h-12 w-12 place-items-center rounded-[14px] bg-[#FF9500] text-white shadow-sm"><i data-lucide="file-lock-2" class="h-6 w-6"></i></div>
+          <h3 class="mt-5 text-xl font-semibold">Encrypted documents</h3>
+          <p class="mt-2 leading-relaxed text-black/60 dark:text-white/60">Attach PDFs, photos and scans to any item. Each file gets its own key, and they open in-app without leaving an unencrypted copy behind.</p>
+        </div>
+        <div class="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+          <div class="grid h-12 w-12 place-items-center rounded-[14px] bg-[#5856D6] text-white shadow-sm"><i data-lucide="timer" class="h-6 w-6"></i></div>
+          <h3 class="mt-5 text-xl font-semibold">Built-in authenticator</h3>
+          <p class="mt-2 leading-relaxed text-black/60 dark:text-white/60">Scan a QR code to add two-factor accounts. Live codes with a countdown, and codes saved on a login show up automatically.</p>
+        </div>
+        <div class="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+          <div class="grid h-12 w-12 place-items-center rounded-[14px] bg-[#AF52DE] text-white shadow-sm"><i data-lucide="wand-sparkles" class="h-6 w-6"></i></div>
+          <h3 class="mt-5 text-xl font-semibold">Password generator</h3>
+          <p class="mt-2 leading-relaxed text-black/60 dark:text-white/60">Random passwords, easy-to-type passphrases or PINs, with strength and entropy at a glance.</p>
+        </div>
+        <div class="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+          <div class="grid h-12 w-12 place-items-center rounded-[14px] bg-[#FF3B30] text-white shadow-sm"><i data-lucide="shield-check" class="h-6 w-6"></i></div>
+          <h3 class="mt-5 text-xl font-semibold">Security check</h3>
+          <p class="mt-2 leading-relaxed text-black/60 dark:text-white/60">Spot weak, reused and old passwords. Optionally check for breaches — only a short hash fragment is ever sent.</p>
+        </div>
+        <div class="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+          <div class="grid h-12 w-12 place-items-center rounded-[14px] bg-[#34C759] text-white shadow-sm"><i data-lucide="scan-face" class="h-6 w-6"></i></div>
+          <h3 class="mt-5 text-xl font-semibold">Unlock in a glance</h3>
+          <p class="mt-2 leading-relaxed text-black/60 dark:text-white/60">Face ID or a 6-digit passcode, auto-lock, clipboard auto-clear and a privacy blur in the app switcher.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Showcase: 2FA + generator -->
+    <section class="bg-white py-24 dark:bg-ios-dcard">
+      <div class="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 md:grid-cols-2">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wider text-brand dark:text-brand-night">Two-factor, built in</p>
+          <h2 class="mt-3 text-4xl font-bold tracking-tight">Your codes live next to your passwords.</h2>
+          <p class="mt-5 text-lg leading-relaxed text-black/60 dark:text-white/60">Standard TOTP (RFC 6238) with SHA-1, SHA-256 and SHA-512, 6 or 8 digits. Tap a code to copy it — it’s cleared from the clipboard automatically.</p>
+        </div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 rounded-2xl bg-ios-bg p-4 dark:bg-black sm:gap-4">
+            <span class="grid h-11 w-11 place-items-center rounded-full bg-black/5 font-semibold dark:bg-white/10">G</span>
+            <div class="min-w-0 flex-1"><div class="text-sm font-semibold">GitHub</div><div class="whitespace-nowrap font-mono text-2xl font-semibold tracking-wider text-brand dark:text-brand-night sm:text-3xl">579 232</div><div class="text-xs text-ios-label2">octocat</div></div>
+            <svg class="h-9 w-9 -rotate-90" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-opacity=".12" stroke-width="3"/><circle class="ring-anim text-brand dark:text-brand-night" cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="30"/></svg>
+          </div>
+          <div class="flex items-center gap-3 rounded-2xl bg-ios-bg p-4 dark:bg-black sm:gap-4">
+            <span class="grid h-11 w-11 place-items-center rounded-full bg-black/5 font-semibold dark:bg-white/10">A</span>
+            <div class="min-w-0 flex-1"><div class="text-sm font-semibold">AWS</div><div class="whitespace-nowrap font-mono text-2xl font-semibold tracking-wider text-brand dark:text-brand-night sm:text-3xl">483 211</div><div class="text-xs text-ios-label2">root@company.com</div></div>
+            <svg class="h-9 w-9 -rotate-90" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-opacity=".12" stroke-width="3"/><circle class="ring-anim text-brand dark:text-brand-night" cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="30"/></svg>
+          </div>
+          <div class="rounded-2xl bg-ios-bg p-5 text-center dark:bg-black">
+            <div class="font-mono text-2xl tracking-wide"><span class="text-[#E0395E]">/]</span>Wx<span class="text-[#E0395E]">;</span>XqPr<span class="text-[#E0395E]">#(&amp;</span>gyY<span class="text-brand dark:text-brand-night">3</span>F<span class="text-[#E0395E]">-[</span><span class="text-brand dark:text-brand-night">6</span></div>
+            <div class="mx-auto mt-4 h-1 max-w-sm rounded-full bg-[#34C759]"></div>
+            <div class="mx-auto mt-2 flex max-w-sm justify-between text-xs"><span class="font-semibold text-[#34C759]">Very Strong</span><span class="text-ios-label2">131 bits</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Security -->
+    <section id="security" class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="text-sm font-semibold uppercase tracking-wider text-brand dark:text-brand-night">How it’s encrypted</p>
+        <h2 class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">Only your master password opens the vault.</h2>
+        <p class="mt-5 text-lg text-black/60 dark:text-white/60">Encryption happens on your iPhone. Nothing readable is ever stored or uploaded.</p>
+      </div>
+      <ol class="mx-auto mt-14 grid max-w-5xl gap-4 md:grid-cols-5">
+        <li class="rounded-2xl bg-white p-5 ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+          <div class="flex items-center justify-between"><span class="grid h-9 w-9 place-items-center rounded-xl bg-brand/10 text-brand dark:bg-white/10 dark:text-brand-night"><i data-lucide="key-round" class="h-[18px] w-[18px]"></i></span><span class="text-xs font-semibold text-ios-label2">1</span></div><div class="mt-2 font-semibold">Master password</div><p class="mt-1 text-sm text-black/55 dark:text-white/55">Known only to you. Never stored or sent.</p>
+        </li>
+        <li class="rounded-2xl bg-white p-5 ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+          <div class="flex items-center justify-between"><span class="grid h-9 w-9 place-items-center rounded-xl bg-brand/10 text-brand dark:bg-white/10 dark:text-brand-night"><i data-lucide="cpu" class="h-[18px] w-[18px]"></i></span><span class="text-xs font-semibold text-ios-label2">2</span></div><div class="mt-2 font-semibold">Argon2id</div><p class="mt-1 text-sm text-black/55 dark:text-white/55">64 MiB, 3 passes — makes guessing slow and expensive.</p>
+        </li>
+        <li class="rounded-2xl bg-white p-5 ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+          <div class="flex items-center justify-between"><span class="grid h-9 w-9 place-items-center rounded-xl bg-brand/10 text-brand dark:bg-white/10 dark:text-brand-night"><i data-lucide="lock-keyhole" class="h-[18px] w-[18px]"></i></span><span class="text-xs font-semibold text-ios-label2">3</span></div><div class="mt-2 font-semibold">Vault key</div><p class="mt-1 text-sm text-black/55 dark:text-white/55">A random 256-bit key, wrapped by your master key.</p>
+        </li>
+        <li class="rounded-2xl bg-white p-5 ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+          <div class="flex items-center justify-between"><span class="grid h-9 w-9 place-items-center rounded-xl bg-brand/10 text-brand dark:bg-white/10 dark:text-brand-night"><i data-lucide="shield-check" class="h-[18px] w-[18px]"></i></span><span class="text-xs font-semibold text-ios-label2">4</span></div><div class="mt-2 font-semibold">AES-256-GCM</div><p class="mt-1 text-sm text-black/55 dark:text-white/55">Seals your vault and each file with its own key.</p>
+        </li>
+        <li class="rounded-2xl brand-gradient p-5 text-white shadow-lg">
+          <div class="flex items-center justify-between"><span class="grid h-9 w-9 place-items-center rounded-xl bg-white/20 text-white"><i data-lucide="database" class="h-[18px] w-[18px]"></i></span><span class="text-xs font-semibold text-white/70">5</span></div><div class="mt-2 font-semibold">Encrypted vault</div><p class="mt-1 text-sm text-white/80">Stored on your iPhone and, if you choose, your Google Drive.</p>
+        </li>
+      </ol>
+      <div class="mx-auto mt-10 grid max-w-5xl gap-4 text-sm sm:grid-cols-3">
+        <div class="rounded-2xl bg-white p-5 ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10"><i data-lucide="shield-alert" class="mb-2 h-5 w-5 text-brand dark:text-brand-night"></i><span class="font-semibold">Tamper-proof.</span> <span class="text-black/55 dark:text-white/55">Authenticated encryption detects any change to your data.</span></div>
+        <div class="rounded-2xl bg-white p-5 ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10"><i data-lucide="refresh-cw" class="mb-2 h-5 w-5 text-brand dark:text-brand-night"></i><span class="font-semibold">Fast password changes.</span> <span class="text-black/55 dark:text-white/55">Only the vault key is re-wrapped; Face ID keeps working.</span></div>
+        <div class="rounded-2xl bg-white p-5 ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10"><i data-lucide="fingerprint" class="mb-2 h-5 w-5 text-brand dark:text-brand-night"></i><span class="font-semibold">Passcode lockout.</span> <span class="text-black/55 dark:text-white/55">After 5 wrong attempts, only the master password works.</span></div>
+      </div>
+    </section>
+
+    <!-- Sync -->
+    <section id="sync" class="bg-white py-24 dark:bg-ios-dcard">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6">
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="text-sm font-semibold uppercase tracking-wider text-brand dark:text-brand-night">Sync on your terms</p>
+          <h2 class="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">Every device. Your Google Drive.</h2>
+          <p class="mt-5 text-lg text-black/60 dark:text-white/60">Sync is optional. When it’s on, an encrypted copy lives in a private app folder in your own Drive — hidden from the Drive app, readable only with your master password.</p>
+        </div>
+        <div class="mt-14 grid gap-5 md:grid-cols-3">
+          <div class="rounded-3xl bg-ios-bg p-7 dark:bg-black">
+            <div class="flex items-center justify-between"><div class="grid h-10 w-10 place-items-center rounded-full brand-gradient font-semibold text-white">1</div><i data-lucide="cloud" class="h-6 w-6 text-black/30 dark:text-white/30"></i></div>
+            <h3 class="mt-4 text-lg font-semibold">Turn on sync</h3>
+            <p class="mt-2 text-black/60 dark:text-white/60">Settings → Google Drive → sign in. Your encrypted vault uploads.</p>
+          </div>
+          <div class="rounded-3xl bg-ios-bg p-7 dark:bg-black">
+            <div class="flex items-center justify-between"><div class="grid h-10 w-10 place-items-center rounded-full brand-gradient font-semibold text-white">2</div><i data-lucide="smartphone" class="h-6 w-6 text-black/30 dark:text-white/30"></i></div>
+            <h3 class="mt-4 text-lg font-semibold">Add another device</h3>
+            <p class="mt-2 text-black/60 dark:text-white/60">Install CabinetPass → Import Existing Vault → From Google Drive → enter your master password.</p>
+          </div>
+          <div class="rounded-3xl bg-ios-bg p-7 dark:bg-black">
+            <div class="flex items-center justify-between"><div class="grid h-10 w-10 place-items-center rounded-full brand-gradient font-semibold text-white">3</div><i data-lucide="refresh-cw" class="h-6 w-6 text-black/30 dark:text-white/30"></i></div>
+            <h3 class="mt-4 text-lg font-semibold">Stay in sync</h3>
+            <p class="mt-2 text-black/60 dark:text-white/60">Changes merge item by item across devices. Status and any issues show right on the Vaults screen.</p>
+          </div>
+        </div>
+        <p class="mt-8 text-center text-sm text-black/50 dark:text-white/50">Prefer offline? Export an encrypted backup file anytime and restore it on a new iPhone.</p>
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section id="privacy" class="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+      <div class="overflow-hidden rounded-[32px] brand-gradient p-10 text-white shadow-phone sm:p-14">
+        <div class="grid items-center gap-10 md:grid-cols-[1fr_auto]">
+          <div>
+            <h2 class="text-4xl font-bold tracking-tight">Data Not Collected.</h2>
+            <p class="mt-4 max-w-xl text-lg text-white/85">No analytics, no ads, no tracking, no account. We don’t run servers that hold your data, so there’s nothing for us to see, sell or lose.</p>
+            <ul class="mt-6 space-y-2 text-white/90">
+              <li class="flex items-start gap-2.5"><i data-lucide="circle-check" class="mt-0.5 h-5 w-5 shrink-0"></i> Your vault stays on your device unless you turn on sync.</li>
+              <li class="flex items-start gap-2.5"><i data-lucide="circle-check" class="mt-0.5 h-5 w-5 shrink-0"></i> Sync stores only encrypted data, in your own Google Drive.</li>
+              <li class="flex items-start gap-2.5"><i data-lucide="circle-check" class="mt-0.5 h-5 w-5 shrink-0"></i> Breach checks send a 5-character hash prefix — never your password.</li>
+            </ul>
+            <a href="privacy.html" class="mt-6 inline-flex items-center gap-1.5 font-semibold text-white hover:underline">Read the Privacy Policy <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
+          </div>
+          <img src="logo.png" alt="" class="mx-auto h-40 w-40 drop-shadow-2xl sm:h-52 sm:w-52" />
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="mx-auto max-w-3xl px-4 pb-24 sm:px-6">
+      <h2 class="text-center text-4xl font-bold tracking-tight">Questions</h2>
+      <div class="mt-10 divide-y divide-black/5 overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 dark:divide-white/10 dark:bg-ios-dcard dark:ring-white/10">
+        <details class="group p-5">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 font-semibold">What if I forget my master password?<i data-lucide="chevron-right" class="chev h-5 w-5 shrink-0 text-ios-label2 transition"></i></summary>
+          <p class="mt-3 text-black/60 dark:text-white/60">It can’t be recovered — not by you, and not by us. That’s what keeps your vault private. Choose a passphrase of five or more random words and keep a written copy somewhere safe.</p>
+        </details>
+        <details class="group p-5">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 font-semibold">Can Google read my passwords?<i data-lucide="chevron-right" class="chev h-5 w-5 shrink-0 text-ios-label2 transition"></i></summary>
+          <p class="mt-3 text-black/60 dark:text-white/60">No. The vault is encrypted on your iPhone before upload. Google stores an encrypted file in a hidden app folder and never has the key.</p>
+        </details>
+        <details class="group p-5">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 font-semibold">Can I change my master password?<i data-lucide="chevron-right" class="chev h-5 w-5 shrink-0 text-ios-label2 transition"></i></summary>
+          <p class="mt-3 text-black/60 dark:text-white/60">Yes — Settings → Change Master Password. Your other synced devices pick up the new password automatically.</p>
+        </details>
+        <details class="group p-5">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 font-semibold">How do I move from another password manager?<i data-lucide="chevron-right" class="chev h-5 w-5 shrink-0 text-ios-label2 transition"></i></summary>
+          <p class="mt-3 text-black/60 dark:text-white/60">Export a CSV from Chrome, Safari, Bitwarden, 1Password or LastPass, then import it in Settings. Delete the CSV afterwards — it isn’t encrypted.</p>
+        </details>
+        <details class="group p-5">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 font-semibold">What files can I store?<i data-lucide="chevron-right" class="chev h-5 w-5 shrink-0 text-ios-label2 transition"></i></summary>
+          <p class="mt-3 text-black/60 dark:text-white/60">PDFs, photos, camera scans and common documents up to 50 MB each. Every file is encrypted with its own key.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-black/5 dark:border-white/10">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-10 text-sm text-black/50 dark:text-white/50 sm:flex-row sm:px-6">
+      <div class="flex items-center gap-2"><img src="logo.png" alt="" class="h-6 w-6" /><span>© <span id="year">2026</span> CabinetPass</span></div>
+      <div class="flex gap-6">
+        <a href="#privacy" class="hover:text-black dark:hover:text-white">Privacy</a>
+        <!-- Replace with your support address. -->
+        <a href="mailto:support@example.com" class="inline-flex items-center gap-1.5 hover:text-black dark:hover:text-white"><i data-lucide="mail" class="h-4 w-4"></i>Support</a>
+        <a href="#download" class="hover:text-black dark:hover:text-white">Download</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    lucide.createIcons({ attrs: { 'stroke-width': 1.9 } });
+  </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Terms of Service — CabinetPass</title>
+  <meta name="description" content="Terms of Service for the CabinetPass app." />
+  <meta name="theme-color" content="#0B5CF0" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'media',
+      theme: { extend: {
+        colors: { brand: { DEFAULT: '#0B5CF0', night: '#3F8CFF' }, ios: { bg: '#F2F2F7', dcard: '#1C1C1E', label2: '#8E8E93' } },
+        fontFamily: { sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', 'Inter', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'] },
+      } },
+    };
+  </script>
+  <style>
+    body { -webkit-font-smoothing: antialiased; }
+    .nav-glass { background: rgba(242,242,247,.72); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); }
+    @media (prefers-color-scheme: dark) { .nav-glass { background: rgba(0,0,0,.6); } }
+    .prose h2 { scroll-margin-top: 5rem; }
+  </style>
+</head>
+<body class="bg-ios-bg text-black dark:bg-black dark:text-white font-sans">
+  <header class="sticky top-0 z-50 nav-glass border-b border-black/5 dark:border-white/10">
+    <nav class="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <a href="index.html" class="flex items-center gap-2 font-semibold tracking-tight">
+        <img src="logo.png" alt="" class="h-8 w-8" /><span class="hidden text-[17px] min-[360px]:inline">CabinetPass</span>
+      </a>
+      <div class="flex items-center gap-5 text-sm text-black/70 dark:text-white/70">
+        <a href="privacy.html" class="hover:text-black dark:hover:text-white">Privacy</a>
+        <a href="terms.html" class="font-semibold text-black dark:text-white">Terms</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="mx-auto max-w-3xl px-4 py-14 sm:px-6">
+    <p class="text-sm font-semibold uppercase tracking-wider text-brand dark:text-brand-night">Legal</p>
+    <h1 class="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">Terms of Service</h1>
+    <p class="mt-3 text-black/50 dark:text-white/50">Effective September 30, 2026</p>
+
+    <div class="mt-10 flex gap-3 rounded-2xl bg-white p-5 ring-1 ring-black/5 dark:bg-ios-dcard dark:ring-white/10">
+      <i data-lucide="triangle-alert" class="mt-0.5 h-5 w-5 shrink-0 text-[#FF9500]"></i>
+      <p class="text-[15px] leading-relaxed text-black/70 dark:text-white/70">
+        <strong class="text-black dark:text-white">Your master password cannot be recovered.</strong> CabinetPass is built so that no one but you
+        can decrypt your vault. If you forget your master password, your data cannot be restored by you or by us.
+      </p>
+    </div>
+
+    <article class="prose prose-neutral mt-12 max-w-none [overflow-wrap:anywhere] dark:prose-invert prose-headings:tracking-tight prose-a:text-brand dark:prose-a:text-brand-night prose-a:no-underline hover:prose-a:underline">
+      <p>
+        These Terms of Service (“Terms”) govern your use of the CabinetPass app for iPhone (“CabinetPass”, “the app”) provided by
+        <strong>[DEVELOPER / COMPANY NAME]</strong> (“we”, “us”). By downloading or using the app you agree to these Terms. If you do
+        not agree, do not use the app.
+      </p>
+
+      <h2 id="license">1. License</h2>
+      <p>We grant you a personal, non-exclusive, non-transferable, revocable license to use CabinetPass on Apple devices that you own or
+        control, as permitted by the Usage Rules in the
+        <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" rel="noopener">Apple Media Services Terms</a>.
+        These Terms are between you and us, not Apple; Apple is not responsible for the app or its content.</p>
+
+      <h2 id="responsibility">2. Your responsibilities</h2>
+      <ul>
+        <li><strong>Master password.</strong> You are solely responsible for creating, remembering and safeguarding your master password
+          and any app passcode. We cannot reset or recover them.</li>
+        <li><strong>Backups.</strong> You are responsible for keeping backups of your vault, for example by enabling Google Drive sync or
+          exporting an encrypted backup file. Data may be lost if your device is lost, damaged or erased without a backup.</li>
+        <li><strong>Device security.</strong> Keep your device’s operating system updated and protected by a device passcode.</li>
+        <li><strong>Exported data.</strong> Files you export in decrypted form, and CSV files you import, are not protected by
+          CabinetPass. Handle and delete them carefully.</li>
+      </ul>
+
+      <h2 id="acceptable">3. Acceptable use</h2>
+      <p>You agree not to use CabinetPass to store or share content you do not have the right to hold, to break the law, or to reverse
+        engineer, tamper with or interfere with the app except as permitted by applicable law.</p>
+
+      <h2 id="thirdparty">4. Third-party services</h2>
+      <p>Optional features rely on third-party services, which are governed by their own terms:</p>
+      <ul>
+        <li><strong>Google Drive sync</strong> uses Google Sign-In and the Google Drive API under
+          <a href="https://policies.google.com/terms" rel="noopener">Google’s Terms of Service</a>. How we handle Google user data is
+          described in our <a href="privacy.html#google">Privacy Policy</a>.</li>
+        <li><strong>Breach checks</strong> use the Have I Been Pwned Pwned Passwords API.</li>
+      </ul>
+      <p>We are not responsible for the availability, security or actions of third-party services.</p>
+
+      <h2 id="warranty">5. Disclaimer of warranties</h2>
+      <p>CabinetPass is provided <strong>“as is” and “as available”</strong>, without warranties of any kind, express or implied,
+        including warranties of merchantability, fitness for a particular purpose and non-infringement. We do not warrant that the app
+        will be uninterrupted, error-free or free of security vulnerabilities, or that data will never be lost. In the event of any
+        failure of the app to conform to an applicable warranty, you may notify Apple, and Apple will refund the purchase price (if
+        any); Apple has no other warranty obligation with respect to the app.</p>
+
+      <h2 id="liability">6. Limitation of liability</h2>
+      <p>To the maximum extent permitted by law, we will not be liable for any indirect, incidental, special, consequential or punitive
+        damages, or for any loss of data, passwords, access to accounts, profits or revenue, arising from your use of or inability to
+        use the app, including loss caused by a forgotten master password. Our total liability for any claim relating to the app will
+        not exceed the amount you paid for the app, if any. Some jurisdictions do not allow these limitations, so they may not apply
+        to you.</p>
+
+      <h2 id="termination">7. Termination</h2>
+      <p>You may stop using the app at any time by deleting it. We may suspend or end the license if you materially breach these Terms.
+        Sections 2, 5, 6 and 9 survive termination.</p>
+
+      <h2 id="changes">8. Changes</h2>
+      <p>We may update these Terms. We will change the effective date above and, for material changes, notify you in the app or on
+        this page. Continued use after changes take effect means you accept the updated Terms.</p>
+
+      <h2 id="law">9. Governing law</h2>
+      <p>These Terms are governed by the laws of <strong>[JURISDICTION]</strong>, without regard to its conflict-of-laws rules, except
+        where the law of your country of residence gives you mandatory protections.</p>
+
+      <h2 id="contact">10. Contact</h2>
+      <p>
+        <strong>[DEVELOPER / COMPANY NAME]</strong><br />
+        [POSTAL ADDRESS]<br />
+        Email: <a href="mailto:support@example.com">support@example.com</a>
+      </p>
+    </article>
+  </main>
+
+  <footer class="border-t border-black/5 dark:border-white/10">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-10 text-sm text-black/50 dark:text-white/50 sm:flex-row sm:px-6">
+      <div class="flex items-center gap-2"><img src="logo.png" alt="" class="h-6 w-6" /><span>© <span id="year">2026</span> CabinetPass</span></div>
+      <div class="flex gap-6">
+        <a href="index.html" class="hover:text-black dark:hover:text-white">Home</a>
+        <a href="privacy.html" class="hover:text-black dark:hover:text-white">Privacy</a>
+        <a href="terms.html" class="hover:text-black dark:hover:text-white">Terms</a>
+        <a href="mailto:support@example.com" class="hover:text-black dark:hover:text-white">Support</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    lucide.createIcons({ attrs: { 'stroke-width': 1.9 } });
+  </script>
+</body>
+</html>
